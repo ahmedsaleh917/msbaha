@@ -20,12 +20,11 @@
             font-family: 'Tajawal', sans-serif;
             background-color: var(--bg-light);
             display: flex; flex-direction: column; align-items: center;
-            height: 700px; /* الارتفاع المطلوب */
+            height: 700px;
             width: 100%;
-            overflow: hidden; /* لمنع التمرير */
+            overflow: hidden;
         }
 
-        /* الهيدر المنحني - تم تقليل الارتفاع ليناسب 700px */
         .header-bg {
             background-color: var(--primary-green);
             height: 160px; width: 100%;
@@ -40,7 +39,6 @@
             color: white; margin-top: 20px; font-weight: 900; font-size: 1.2rem;
         }
 
-        /* الشعار الدائري */
         .logo-box {
             position: absolute; bottom: -35px;
             width: 80px; height: 80px;
@@ -49,7 +47,6 @@
         }
         .logo-box img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
 
-        /* حاوية المسبحة - ضبط المسافات الداخلية والخارجية */
         .tasbeeh-card {
             margin-top: 50px;
             width: 92%; max-width: 360px;
@@ -78,7 +75,6 @@
             text-shadow: 1px 1px 0px rgba(212, 175, 55, 0.2);
         }
 
-        /* زر التسبيح - تم تصغير الحجم قليلاً للتناسب مع الارتفاع */
         .tap-zone {
             width: 150px; height: 150px;
             background: var(--card-white);
@@ -159,25 +155,33 @@
 </footer>
 
 <script>
-    // جلب البيانات المحفوظة من الذاكرة أو البدء بأصفار إذا كانت أول مرة
-    var savedCounters = localStorage.getItem('tasbeehData');
-    var counters = savedCounters ? JSON.parse(savedCounters) : { "1": 0, "2": 0, "3": 0, "4": 0, "5": 0, "6": 0, "7": 0, "8": 0, "9": 0, "10": 0 };
-
+    // تهيئة المتغيرات
     var selector = document.getElementById('zikrList');
     var display = document.getElementById('counter');
+    var counters = { "1": 0, "2": 0, "3": 0, "4": 0, "5": 0, "6": 0, "7": 0, "8": 0, "9": 0, "10": 0 };
 
-    // عرض القيمة المحفوظة لأول ذكر عند تحميل الصفحة
-    window.onload = function() {
-        display.innerHTML = counters[selector.value];
-    };
+    // وظيفة لتحميل البيانات فوراً عند فتح الصفحة
+    function loadData() {
+        var saved = localStorage.getItem('sabriFX_tasbeeh');
+        if (saved) {
+            counters = JSON.parse(saved);
+        }
+        updateDisplay();
+    }
+
+    // وظيفة لتحديث الشاشة بناءً على الذكر المختار
+    function updateDisplay() {
+        var currentId = selector.value;
+        display.innerHTML = counters[currentId] || 0;
+    }
 
     function doIncrement() {
         var currentId = selector.value;
-        counters[currentId]++;
-        display.innerHTML = counters[currentId];
+        counters[currentId] = (counters[currentId] || 0) + 1;
+        updateDisplay();
         
-        // حفظ التحديث فوراً في ذاكرة المتصفح
-        localStorage.setItem('tasbeehData', JSON.stringify(counters));
+        // حفظ في الذاكرة
+        localStorage.setItem('sabriFX_tasbeeh', JSON.stringify(counters));
         
         if (navigator.vibrate) {
             navigator.vibrate(40);
@@ -185,19 +189,20 @@
     }
 
     function switchZikr() {
-        var currentId = selector.value;
-        display.innerHTML = counters[currentId];
+        updateDisplay();
     }
 
     function doReset() {
         if(confirm("هل تريد تصفير عداد هذا الذكر؟")) {
             var currentId = selector.value;
             counters[currentId] = 0;
-            display.innerHTML = "0";
-            // تحديث الذاكرة بعد التصفير
-            localStorage.setItem('tasbeehData', JSON.stringify(counters));
+            updateDisplay();
+            localStorage.setItem('sabriFX_tasbeeh', JSON.stringify(counters));
         }
     }
+
+    // تشغيل التحميل عند بدء الصفحة
+    window.onload = loadData;
 </script>
 
 </body>
