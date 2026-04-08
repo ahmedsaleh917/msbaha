@@ -159,14 +159,25 @@
 </footer>
 
 <script>
-    var counters = { "1": 0, "2": 0, "3": 0, "4": 0, "5": 0, "6": 0, "7": 0, "8": 0, "9": 0, "10": 0 };
+    // جلب البيانات المحفوظة من الذاكرة أو البدء بأصفار إذا كانت أول مرة
+    var savedCounters = localStorage.getItem('tasbeehData');
+    var counters = savedCounters ? JSON.parse(savedCounters) : { "1": 0, "2": 0, "3": 0, "4": 0, "5": 0, "6": 0, "7": 0, "8": 0, "9": 0, "10": 0 };
+
     var selector = document.getElementById('zikrList');
     var display = document.getElementById('counter');
+
+    // عرض القيمة المحفوظة لأول ذكر عند تحميل الصفحة
+    window.onload = function() {
+        display.innerHTML = counters[selector.value];
+    };
 
     function doIncrement() {
         var currentId = selector.value;
         counters[currentId]++;
         display.innerHTML = counters[currentId];
+        
+        // حفظ التحديث فوراً في ذاكرة المتصفح
+        localStorage.setItem('tasbeehData', JSON.stringify(counters));
         
         if (navigator.vibrate) {
             navigator.vibrate(40);
@@ -183,6 +194,8 @@
             var currentId = selector.value;
             counters[currentId] = 0;
             display.innerHTML = "0";
+            // تحديث الذاكرة بعد التصفير
+            localStorage.setItem('tasbeehData', JSON.stringify(counters));
         }
     }
 </script>
