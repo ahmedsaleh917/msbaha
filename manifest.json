@@ -1,0 +1,25 @@
+{
+  "name": "مسبحة صفاء الروح",
+  "short_name": "مسبحة صفاء",
+  "description": "مسبحة إلكترونية لأذكار المسلم مع حفظ التقدم",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#f4f7f6",
+  "theme_color": "#1e4d2b",
+  "orientation": "portrait",
+  "lang": "ar",
+  "dir": "rtl",
+  "icons": [
+    {
+      "src": "https://i.postimg.cc/zGSvxgCn/1775323811617.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://i.postimg.cc/zGSvxgCn/1775323811617.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
