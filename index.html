@@ -3,19 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="theme-color" content="#1e4d2b">
+    <meta name="theme-color" content="#2d2d2d">
     <title>مسبحة صفاء الروح | sabriFX</title>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="manifest" href="manifest.json">
     <style>
         :root {
-            --primary-green: #1e4d2b;
-            --dark-green: #0d2818;
-            --accent-gold: #d4af37;
-            --bg-light: #f4f7f6;
-            --card-white: #ffffff;
-            --text-dark: #1a1a1a;
+            --primary-dark: #2d2d2d;
+            --primary-darker: #1a1a1a;
+            --accent-gold: #f4d03f;
+            --accent-gold-light: #ffd700;
+            --card-bg: #2d2d2d;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --shadow: 0 8px 25px rgba(0,0,0,0.4);
         }
 
         * {
@@ -28,196 +29,195 @@
         body {
             margin: 0; padding: 0;
             font-family: 'Tajawal', sans-serif;
-            background-color: var(--bg-light);
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
             display: flex; flex-direction: column; align-items: center;
             min-height: 100vh;
             width: 100%;
             overflow-x: hidden;
-        }
-
-        /* صفحة Offline */
-        #offline-page {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(135deg, var(--primary-green) 0%, var(--dark-green) 100%);
-            z-index: 9999;
-            justify-content: center; align-items: center;
-            padding: 20px;
-        }
-        #offline-page.show { display: flex; }
-        
-        .offline-container {            background: #ffffff; border-radius: 30px;
-            padding: 50px 35px; text-align: center;
-            max-width: 90%; width: 380px;
-            box-shadow: 0 25px 80px rgba(0,0,0,0.4);
-            border: 5px solid var(--accent-gold);
-            animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-            position: relative; overflow: hidden;
-        }
-        .offline-container::before {
-            content: ''; position: absolute; top: -50%; left: -50%;
-            width: 200%; height: 200%;
-            background: radial-gradient(circle, rgba(212,175,55,0.1) 0%, transparent 70%);
-            animation: pulse 3s ease-in-out infinite;
-        }
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(40px) scale(0.95); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
-        }
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); opacity: 0.5; }
-            50% { transform: scale(1.1); opacity: 0.8; }
-        }
-        .offline-icon-wrapper {
-            width: 100px; height: 100px; margin: 0 auto 25px;
-            background: linear-gradient(135deg, var(--primary-green), #2d6a4f);
-            border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            position: relative; z-index: 1;
-            box-shadow: 0 10px 30px rgba(30, 77, 43, 0.3);
-            animation: float 3s ease-in-out infinite;
-        }
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
-        .offline-icon { color: white; font-size: 2.5rem; }
-        .offline-title {
-            color: var(--primary-green); font-size: 1.6rem; font-weight: 900;
-            margin-bottom: 20px; position: relative; z-index: 1; line-height: 1.4;
-        }
-        .offline-text {
-            color: #666; font-size: 1.05rem; line-height: 1.8;
-            margin-bottom: 0; position: relative; z-index: 1; font-weight: 500;
+            color: var(--text-primary);
         }
 
         .header-bg {
-            background-color: var(--primary-green); height: 160px; width: 100%;
+            background: linear-gradient(135deg, rgba(45, 45, 45, 0.98), rgba(26, 26, 26, 0.95));
+            height: 140px; width: 100%;
             border-bottom-left-radius: 40px; border-bottom-right-radius: 40px;
-            position: relative; display: flex; justify-content: center;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            position: relative; display: flex; justify-content: center; align-items: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            border-bottom: 2px solid var(--accent-gold);
         }
-        .header-title { color: white; margin-top: 20px; font-weight: 900; font-size: 1.2rem; }
-        .logo-box {
-            position: absolute; bottom: -35px; width: 80px; height: 80px;            background: white; border-radius: 50%; padding: 4px;
-            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+        .header-title { 
+            color: var(--accent-gold); 
+            font-weight: 900;             font-size: 1.4rem;
+            text-shadow: 0 2px 8px rgba(244, 208, 63, 0.3);
         }
-        .logo-box img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
 
         .tasbeeh-card {
-            margin-top: 50px; width: 92%; max-width: 360px;
-            background: var(--card-white); padding: 20px 15px;
-            border-radius: 25px; box-shadow: 0 12px 30px rgba(0,0,0,0.05);
-            text-align: center; border: 1px solid rgba(0,0,0,0.02);
+            margin-top: 35px; 
+            width: 92%; 
+            max-width: 380px;
+            background: var(--card-bg); 
+            padding: 25px 20px;
+            border-radius: 25px; 
+            box-shadow: var(--shadow);
+            text-align: center; 
+            border: 1px solid rgba(244, 208, 63, 0.2);
         }
 
         .zikr-selector {
-            width: 100%; padding: 12px; background-color: var(--bg-light);
-            border: 2px solid rgba(30, 77, 43, 0.1); border-radius: 12px;
-            color: var(--primary-green); font-family: 'Tajawal', sans-serif;
-            font-weight: 800; margin-bottom: 15px; outline: none; cursor: pointer;
-            text-align: center; font-size: 0.95rem;
-            -webkit-appearance: none; appearance: none;
+            width: 100%; 
+            padding: 14px; 
+            background-color: rgba(255,255,255,0.05);
+            border: 2px solid rgba(244, 208, 63, 0.3); 
+            border-radius: 15px;
+            color: var(--text-primary); 
+            font-family: 'Tajawal', sans-serif;
+            font-weight: 800; 
+            margin-bottom: 20px; 
+            outline: none; 
+            cursor: pointer;
+            text-align: center; 
+            font-size: 1rem;
+            -webkit-appearance: none; 
+            appearance: none;
+        }
+        .zikr-selector option {
+            background: var(--primary-dark);
+            color: var(--text-primary);
         }
 
         .counter-display {
-            font-size: 4.5rem; font-weight: 900; color: var(--primary-green);
-            margin: 5px 0; font-family: sans-serif;
-            text-shadow: 1px 1px 0px rgba(212, 175, 55, 0.2);
-            user-select: none; transition: transform 0.1s;
+            font-size: 4.5rem; 
+            font-weight: 900; 
+            color: var(--accent-gold);
+            margin: 15px 0; 
+            font-family: sans-serif;
+            user-select: none; 
+            line-height: 1;
         }
-        .counter-display.pulse { animation: counterPulse 0.15s ease-out; }
-        @keyframes counterPulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
+
+        .current-zikr {
+            font-size: 1.1rem;            color: var(--text-secondary);
+            margin-bottom: 20px;
+            font-weight: 700;
         }
 
         .tap-zone {
-            width: 150px; height: 150px; background: var(--card-white);
-            border-radius: 50%; margin: 10px auto;
-            display: flex; justify-content: center; align-items: center;
-            cursor: pointer; position: relative;
-            box-shadow: 8px 8px 15px #d1d9e6, -8px -8px 15px #ffffff;
-            border: 3px solid var(--primary-green);
-            transition: transform 0.05s, box-shadow 0.05s;
-            user-select: none;
+            width: 150px; 
+            height: 150px; 
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary-darker));
+            border-radius: 50%; 
+            margin: 20px auto;
+            display: flex; 
+            justify-content: center; 
+            align-items: center;
+            cursor: pointer; 
+            position: relative;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+            border: 3px solid var(--accent-gold);
+            transition: transform 0.08s;
         }
-        .tap-zone:active, .tap-zone.pressed {
-            box-shadow: inset 4px 4px 8px #d1d9e6, inset -4px -4px 8px #ffffff;
+        .tap-zone:active {
             transform: scale(0.96);
+            border-color: var(--accent-gold-light);
         }
-        .tap-zone i { font-size: 2.5rem; color: var(--accent-gold); pointer-events: none; }
-        .tap-label {            position: absolute; bottom: 25px;
-            font-weight: 900; color: var(--primary-green); font-size: 0.8rem;
+        .tap-zone i { 
+            font-size: 2.8rem; 
+            color: var(--accent-gold); 
+            pointer-events: none;
+        }
+        .tap-label {
+            position: absolute; 
+            bottom: 28px;
+            font-weight: 700; 
+            color: var(--accent-gold); 
+            font-size: 0.85rem;
             pointer-events: none;
         }
 
         .btn-reset {
-            background: none; border: 1px solid rgba(0,0,0,0.1);
-            color: #888; padding: 8px 20px; border-radius: 50px;
-            font-weight: 700; font-size: 0.85rem; cursor: pointer;
-            margin-top: 10px; transition: all 0.3s;
+            background: rgba(244, 208, 63, 0.1); 
+            border: 2px solid var(--accent-gold);
+            color: var(--accent-gold); 
+            padding: 12px 30px; 
+            border-radius: 25px;
+            font-weight: 800; 
+            font-size: 0.95rem; 
+            cursor: pointer;
+            margin-top: 15px; 
+            transition: all 0.3s;
+            font-family: 'Tajawal', sans-serif;            display: inline-flex;
+            align-items: center;
+            gap: 8px;
         }
-        .btn-reset:hover { background: rgba(0,0,0,0.05); color: var(--primary-green); }
+        .btn-reset:active { 
+            background: var(--accent-gold); 
+            color: var(--primary-darker);
+            transform: scale(0.98);
+        }
 
         .footer-brand {
-            margin-top: auto; padding: 15px;
-            font-size: 0.75rem; color: #aaa; text-align: center;
+            margin-top: auto; 
+            padding: 20px;
+            font-size: 0.8rem; 
+            color: var(--text-secondary); 
+            text-align: center;
         }
-        .footer-brand span { color: var(--primary-green); font-weight: 900; }
-
-        /* مؤشر الاتصال */
-        #connection-indicator {
-            display: none; position: fixed; top: 10px; left: 50%;
-            transform: translateX(-50%);
-            background: linear-gradient(135deg, var(--primary-green), #2d6a4f);
-            color: white; padding: 8px 20px; border-radius: 20px;
-            font-size: 0.85rem; font-weight: 700;
-            box-shadow: 0 4px 15px rgba(30, 77, 43, 0.3);
-            z-index: 1000; animation: slideDown 0.3s ease;
-        }
-        #connection-indicator.show { display: block; }
-        @keyframes slideDown {
-            from { opacity: 0; transform: translateX(-50%) translateY(-20px); }
-            to { opacity: 1; transform: translateX(-50%) translateY(0); }
+        .footer-brand span { 
+            color: var(--accent-gold); 
+            font-weight: 900; 
         }
 
-        /* تأثير الوميض عند النقر */
-        .ripple {
-            position: absolute; border-radius: 50%;
-            background: rgba(212, 175, 55, 0.4);
-            transform: scale(0); animation: ripple-effect 0.6s ease-out;
-            pointer-events: none;
+        .save-indicator {
+            position: fixed; 
+            top: 20px; 
+            right: 20px;
+            background: rgba(46, 204, 113, 0.95);
+            color: white; 
+            padding: 8px 16px; 
+            border-radius: 20px;
+            font-size: 0.8rem; 
+            font-weight: 700;
+            z-index: 1000; 
+            opacity: 0;
+            transition: opacity 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
-        @keyframes ripple-effect {
-            to { transform: scale(4); opacity: 0; }
+        .save-indicator.show { opacity: 1; }
+
+        .notification {
+            position: fixed; 
+            top: 20px; 
+            left: 50%; 
+            transform: translateX(-50%) translateY(-100px);
+            background: var(--card-bg); 
+            padding: 15px 25px; 
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);            border: 2px solid var(--accent-gold);
+            z-index: 2000; 
+            font-weight: 700; 
+            color: var(--text-primary);
+            transition: transform 0.4s; 
+            max-width: 90%;
         }
+        .notification.show { transform: translateX(-50%) translateY(0); }
     </style>
 </head>
 <body>
 
-<!-- صفحة Offline --><div id="offline-page">
-    <div class="offline-container">
-        <div class="offline-icon-wrapper">
-            <i class="fas fa-wifi-slash offline-icon"></i>
-        </div>
-        <h2 class="offline-title">عذراً، أنت لست متصلاً بالإنترنت</h2>
-        <p class="offline-text">تحتاج إلى الاتصال بالإنترنت لمتابعة رحلتك التعليمية</p>
-    </div>
+<div class="save-indicator" id="saveIndicator">
+    <i class="fas fa-check"></i> <span>تم الحفظ</span>
 </div>
 
-<!-- مؤشر الاتصال -->
-<div id="connection-indicator">
-    <i class="fas fa-wifi"></i> تم استعادة الاتصال
-</div>
+<div class="notification" id="notification"></div>
 
 <div class="header-bg">
-    <div class="header-title">المسبحة الإلكترونية</div>
-    <div class="logo-box">
-        <img src="https://i.postimg.cc/zGSvxgCn/1775323811617.png" alt="صفاء الروح">
-    </div>
+    <div class="header-title">✨ المسبحة الإلكترونية ✨</div>
 </div>
 
 <div class="tasbeeh-card">
-    <select class="zikr-selector" id="zikrList" onchange="switchZikr()">
+    <select class="zikr-selector" id="zikrList">
         <option value="1">استغفر الله</option>
         <option value="2">سبحان الله</option>
         <option value="3">الحمد لله</option>
@@ -230,193 +230,158 @@
         <option value="10">لا إله إلا أنت سبحانك</option>
     </select>
 
+    <div class="current-zikr" id="currentZikr">استغفر الله</div>
     <div class="counter-display" id="counter">0</div>
 
     <div class="tap-zone" id="tapZone">
         <i class="fas fa-fingerprint"></i>
-        <div class="tap-label">اضغط هنا</div>
+        <div class="tap-label">اضغط للعد</div>
     </div>
 
-    <button class="btn-reset" onclick="doReset()">
-        <i class="fas fa-undo"></i> تصفير
+    <button type="button" class="btn-reset" id="resetBtn">
+        <i class="fas fa-undo"></i> تصفير العداد
     </button>
 </div>
 
-<footer class="footer-brand">
-    Tiktok: <span>SabriFX</span> | صفاء الروح</footer>
-
+<footer class="footer-brand">تطبيق <span>صفاء الروح</span> | sabriFX</footer>
 <script>
-    // ⚙️ تهيئة المتغيرات
+    // 🔑 مفتاح التخزين الموحد
+    const STORAGE_KEY = 'sabriFX_tasbeeh_v2';
+    
+    // 📦 عناصر DOM
     const selector = document.getElementById('zikrList');
     const display = document.getElementById('counter');
     const tapZone = document.getElementById('tapZone');
-    
-    let counters = { "1": 0, "2": 0, "3": 0, "4": 0, "5": 0, "6": 0, "7": 0, "8": 0, "9": 0, "10": 0 };
-    let isOnline = navigator.onLine;
-    let lastTapTime = 0;
-    let tapQueue = [];
-    let isProcessing = false;
+    const currentZikrText = document.getElementById('currentZikr');
+    const resetBtn = document.getElementById('resetBtn');
+    const saveIndicator = document.getElementById('saveIndicator');
+    const notification = document.getElementById('notification');
 
-    // 🔄 تسجيل Service Worker
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            navigator.serviceWorker.register('sw.js')
-                .then(reg => console.log('✅ SW registered:', reg.scope))
-                .catch(err => console.log('❌ SW failed:', err));
-        });
-    }
+    // 📜 قائمة الأذكار
+    const zikrNames = {
+        "1": "استغفر الله", "2": "سبحان الله", "3": "الحمد لله",
+        "4": "لا إله إلا الله", "5": "الله أكبر", "6": "لا حول ولا قوة إلا بالله",
+        "7": "الصلاة على النبي ﷺ", "8": "سبحان الله وبحمده", "9": "سبحان الله العظيم",
+        "10": "لا إله إلا أنت سبحانك"
+    };
 
-    // 🌐 التحقق من الاتصال
-    function checkConnection() {
-        if (!navigator.onLine) {
-            document.getElementById('offline-page').classList.add('show');
-        } else {
-            document.getElementById('offline-page').classList.remove('show');
-            showConnectionRestored();
-        }
-    }
+    let counters = {};
+    let saveTimeout = null;
 
-    function showConnectionRestored() {
-        const indicator = document.getElementById('connection-indicator');
-        indicator.classList.add('show');
-        setTimeout(() => indicator.classList.remove('show'), 3000);
-    }
-
-    window.addEventListener('online', () => { isOnline = true; checkConnection(); });
-    window.addEventListener('offline', () => { isOnline = false; checkConnection(); });
-
-    // 💾 تحميل البيانات المحفوظة
+    // 💾 تحميل البيانات عند البدء
     function loadData() {
-        const saved = localStorage.getItem('sabriFX_tasbeeh');
-        if (saved) {
-            try { counters = JSON.parse(saved); } catch(e) {}
-        }
+        try {
+            const saved = localStorage.getItem(STORAGE_KEY);
+            if (saved) {
+                const parsed = JSON.parse(saved);
+                for (let key in parsed) {
+                    if (counters.hasOwnProperty(key)) counters[key] = parseInt(parsed[key]) || 0;
+                }
+            }
+        } catch (e) { console.error('Load Error:', e); }
         updateDisplay();
     }
-    // 📺 تحديث العرض
+
+    // 💾 حفظ البيانات (مؤجل 400ms لتجنب الكتابة المتكررة)
+    function scheduleSave() {
+        if (saveTimeout) clearTimeout(saveTimeout);
+        saveTimeout = setTimeout(() => {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(counters));
+                showSaveIndicator();
+            } catch (e) { console.error('Save Error:', e); }
+        }, 400);
+    }
+    // ️ تحديث الواجهة
     function updateDisplay() {
-        const currentId = selector.value;
-        display.textContent = counters[currentId] || 0;
+        const id = selector.value;
+        display.textContent = counters[id] || 0;
+        currentZikrText.textContent = zikrNames[id];
     }
 
-    // ✨ تأثير الوميض عند النقر
-    function createRipple(event, element) {
-        const ripple = document.createElement('span');
-        ripple.className = 'ripple';
-        const rect = element.getBoundingClientRect();
-        const size = Math.max(rect.width, rect.height);
-        const x = (event.clientX || event.touches?.[0]?.clientX || rect.left + rect.width/2) - rect.left - size/2;
-        const y = (event.clientY || event.touches?.[0]?.clientY || rect.top + rect.height/2) - rect.top - size/2;
-        ripple.style.width = ripple.style.height = size + 'px';
-        ripple.style.left = x + 'px';
-        ripple.style.top = y + 'px';
-        element.appendChild(ripple);
-        setTimeout(() => ripple.remove(), 600);
+    // 🔔 إشعار مؤقت
+    function showNotification(msg) {
+        notification.textContent = msg;
+        notification.classList.add('show');
+        setTimeout(() => notification.classList.remove('show'), 2500);
     }
 
-    // ⚡ معالجة النقرات السريعة - الإصلاح الرئيسي
-    function handleTap(event) {
-        if (event) {
-            event.preventDefault();
-            event.stopPropagation();
-        }
+    function showSaveIndicator() {
+        saveIndicator.classList.add('show');
+        setTimeout(() => saveIndicator.classList.remove('show'), 1200);
+    }
+
+    // 👆 معالجة النقر على منطقة التسبيح
+    function handleTap(e) {
+        e.preventDefault();
+        e.stopPropagation();
         
         const now = Date.now();
-        
-        // منع التكرار خلال 20مللي ثانية فقط (أسرع من أي نقر بشري)
-        if (now - lastTapTime < 20) return;
+        if (now - lastTapTime < 50) return; // منع النقر المزدوج السريع
         lastTapTime = now;
 
-        // إضافة التأثيرات البصرية فوراً
-        if (event) createRipple(event, tapZone);
-        tapZone.classList.add('pressed');
-        display.classList.add('pulse');
-        
-        setTimeout(() => {
-            tapZone.classList.remove('pressed');
-            display.classList.remove('pulse');
-        }, 100);
+        const id = selector.value;
+        counters[id] = (counters[id] || 0) + 1;
+        display.textContent = counters[id];
 
-        // زيادة العداد مباشرة في الذاكرة
-        const currentId = selector.value;
-        counters[currentId] = (counters[currentId] || 0) + 1;
+        if (navigator.vibrate) navigator.vibrate(15);
+        scheduleSave();
+    }
+
+    // 🔄 زر التصفير (مضمون ومستقل)
+    function handleReset(e) {
+        if(e) { e.preventDefault(); e.stopPropagation(); }
         
-        // تحديث العرض فوراً (بدون انتظار)        display.textContent = counters[currentId];
+        const id = selector.value;
+        const currentVal = counters[id] || 0;
         
-        // اهتزاز خفيف
-        if (navigator.vibrate) {
-            try { navigator.vibrate(30); } catch(e) {}
+        if (currentVal === 0) {
+            showNotification('العداد على الصفر بالفعل');
+            return;
         }
 
-        // حفظ في localStorage باستخدام requestIdleCallback أو فوراً
-        if ('requestIdleCallback' in window) {
-            requestIdleCallback(() => {
-                localStorage.setItem('sabriFX_tasbeeh', JSON.stringify(counters));
-            }, { timeout: 100 });
-        } else {
-            // حفظ فوري مع تجميع لتجنب الكتابة المتكررة
-            if (!window.saveTimeout) {
-                window.saveTimeout = setTimeout(() => {
-                    localStorage.setItem('sabriFX_tasbeeh', JSON.stringify(counters));
-                    window.saveTimeout = null;
-                }, 100);
-            }
+        if (confirm(`هل تريد تصفير عداد "${zikrNames[id]}"؟\nالعدد الحالي: ${currentVal}`)) {
+            // 1. تعيين الصفر            counters[id] = 0;
+            
+            // 2. تحديث العرض فوراً
+            display.textContent = '0';
+            
+            // 3. حفظ فوري ومباشر في الذاكرة (يتجاوز المؤقت)
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(counters));
+            } catch(e) {}
+            
+            showSaveIndicator();
+            showNotification('✅ تم تصفير العداد بنجاح');
         }
     }
 
-    // 🎯 ربط أحداث اللمس والنقر - معالجة مزدوجة لمنع فقدان النقرات
-    function bindTapEvents() {
-        // منع السلوك الافتاعي لمنع التمرير عند النقر السريع
+    let lastTapTime = 0;
+
+    // 🚀 تهيئة التطبيق
+    function init() {
+        loadData();
+        
+        // ربط منطقة اللمس
         tapZone.addEventListener('touchstart', handleTap, { passive: false });
         tapZone.addEventListener('mousedown', handleTap);
-        
-        // منع النقر المزدوج على المتصفحات القديمة
-        tapZone.addEventListener('click', (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-        });
-        
-        // إزالة تأثير الضغط عند رفع الإصبع
-        tapZone.addEventListener('touchend', () => {
-            tapZone.classList.remove('pressed');
-        }, { passive: true });
-        tapZone.addEventListener('mouseup', () => {
-            tapZone.classList.remove('pressed');
-        });
-        tapZone.addEventListener('mouseleave', () => {
-            tapZone.classList.remove('pressed');
-        });
+        tapZone.addEventListener('click', e => e.preventDefault());
+
+        // ربط زر التصفير مباشرة
+        resetBtn.addEventListener('click', handleReset);
+        resetBtn.addEventListener('touchend', handleReset);
+
+        // تغيير الذكر
+        selector.addEventListener('change', updateDisplay);
     }
 
-    function switchZikr() { updateDisplay(); }
-
-    function doReset() {        if(confirm("هل تريد تصفير عداد هذا الذكر؟")) {
-            const currentId = selector.value;
-            counters[currentId] = 0;
-            updateDisplay();
-            localStorage.setItem('sabriFX_tasbeeh', JSON.stringify(counters));
-        }
-    }
-
-    // 🚀 بدء التطبيق
-    window.addEventListener('load', () => {
-        loadData();
-        checkConnection();
-        bindTapEvents();
+    // حفظ عند إغلاق التطبيق
+    window.addEventListener('beforeunload', () => {
+        if (saveTimeout) clearTimeout(saveTimeout);
+        try { localStorage.setItem(STORAGE_KEY, JSON.stringify(counters)); } catch(e){}
     });
 
-    // منع التكبير بالنقر المزدوج
-    let lastTouchEnd = 0;
-    document.addEventListener('touchend', (e) => {
-        const now = Date.now();
-        if (now - lastTouchEnd <= 300) e.preventDefault();
-        lastTouchEnd = now;
-    }, { passive: false });
-
-    // منع سحب الصورة والشعار
-    document.querySelectorAll('img').forEach(img => {
-        img.addEventListener('dragstart', e => e.preventDefault());
-    });
+    window.addEventListener('DOMContentLoaded', init);
 </script>
 </body>
 </html>
