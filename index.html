@@ -24,6 +24,7 @@
             touch-action: manipulation;
             user-select: none;
             -webkit-user-select: none;
+            box-sizing: border-box;
         }
 
         body {
@@ -47,7 +48,8 @@
         }
         .header-title { 
             color: var(--accent-gold); 
-            font-weight: 900;             font-size: 1.4rem;
+            font-weight: 900; 
+            font-size: 1.4rem;
             text-shadow: 0 2px 8px rgba(244, 208, 63, 0.3);
         }
 
@@ -80,10 +82,6 @@
             -webkit-appearance: none; 
             appearance: none;
         }
-        .zikr-selector option {
-            background: var(--primary-dark);
-            color: var(--text-primary);
-        }
 
         .counter-display {
             font-size: 4.5rem; 
@@ -91,12 +89,12 @@
             color: var(--accent-gold);
             margin: 15px 0; 
             font-family: sans-serif;
-            user-select: none; 
             line-height: 1;
         }
 
         .current-zikr {
-            font-size: 1.1rem;            color: var(--text-secondary);
+            font-size: 1.1rem; 
+            color: var(--text-secondary);
             margin-bottom: 20px;
             font-weight: 700;
         }
@@ -116,23 +114,9 @@
             border: 3px solid var(--accent-gold);
             transition: transform 0.08s;
         }
-        .tap-zone:active {
-            transform: scale(0.96);
-            border-color: var(--accent-gold-light);
-        }
-        .tap-zone i { 
-            font-size: 2.8rem; 
-            color: var(--accent-gold); 
-            pointer-events: none;
-        }
-        .tap-label {
-            position: absolute; 
-            bottom: 28px;
-            font-weight: 700; 
-            color: var(--accent-gold); 
-            font-size: 0.85rem;
-            pointer-events: none;
-        }
+        .tap-zone:active { transform: scale(0.96); }
+        .tap-zone i { font-size: 2.8rem; color: var(--accent-gold); pointer-events: none; }
+        .tap-label { position: absolute; bottom: 28px; font-weight: 700; color: var(--accent-gold); font-size: 0.85rem; pointer-events: none; }
 
         .btn-reset {
             background: rgba(244, 208, 63, 0.1); 
@@ -145,61 +129,32 @@
             cursor: pointer;
             margin-top: 15px; 
             transition: all 0.3s;
-            font-family: 'Tajawal', sans-serif;            display: inline-flex;
+            font-family: 'Tajawal', sans-serif;
+            display: inline-flex;
             align-items: center;
             gap: 8px;
         }
-        .btn-reset:active { 
-            background: var(--accent-gold); 
-            color: var(--primary-darker);
-            transform: scale(0.98);
-        }
+        .btn-reset:active { background: var(--accent-gold); color: var(--primary-darker); }
 
-        .footer-brand {
-            margin-top: auto; 
-            padding: 20px;
-            font-size: 0.8rem; 
-            color: var(--text-secondary); 
-            text-align: center;
-        }
-        .footer-brand span { 
-            color: var(--accent-gold); 
-            font-weight: 900; 
-        }
+        .footer-brand { margin-top: auto; padding: 20px; font-size: 0.8rem; color: var(--text-secondary); text-align: center; }
+        .footer-brand span { color: var(--accent-gold); font-weight: 900; }
 
         .save-indicator {
-            position: fixed; 
-            top: 20px; 
-            right: 20px;
+            position: fixed; top: 20px; right: 20px;
             background: rgba(46, 204, 113, 0.95);
-            color: white; 
-            padding: 8px 16px; 
-            border-radius: 20px;
-            font-size: 0.8rem; 
-            font-weight: 700;
-            z-index: 1000; 
-            opacity: 0;
-            transition: opacity 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 6px;
+            color: white; padding: 8px 16px; border-radius: 20px;
+            font-size: 0.8rem; font-weight: 700; z-index: 1000; 
+            opacity: 0; transition: opacity 0.3s;
+            display: flex; align-items: center; gap: 6px;
         }
         .save-indicator.show { opacity: 1; }
 
         .notification {
-            position: fixed; 
-            top: 20px; 
-            left: 50%; 
-            transform: translateX(-50%) translateY(-100px);
-            background: var(--card-bg); 
-            padding: 15px 25px; 
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.4);            border: 2px solid var(--accent-gold);
-            z-index: 2000; 
-            font-weight: 700; 
-            color: var(--text-primary);
-            transition: transform 0.4s; 
-            max-width: 90%;
+            position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-100px);
+            background: var(--card-bg); padding: 15px 25px; border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4); border: 2px solid var(--accent-gold);
+            z-index: 2000; font-weight: 700; color: var(--text-primary);
+            transition: transform 0.4s; max-width: 90%;
         }
         .notification.show { transform: translateX(-50%) translateY(0); }
     </style>
@@ -244,11 +199,10 @@
 </div>
 
 <footer class="footer-brand">تطبيق <span>صفاء الروح</span> | sabriFX</footer>
+
 <script>
-    // 🔑 مفتاح التخزين الموحد
     const STORAGE_KEY = 'sabriFX_tasbeeh_v2';
     
-    // 📦 عناصر DOM
     const selector = document.getElementById('zikrList');
     const display = document.getElementById('counter');
     const tapZone = document.getElementById('tapZone');
@@ -257,7 +211,6 @@
     const saveIndicator = document.getElementById('saveIndicator');
     const notification = document.getElementById('notification');
 
-    // 📜 قائمة الأذكار
     const zikrNames = {
         "1": "استغفر الله", "2": "سبحان الله", "3": "الحمد لله",
         "4": "لا إله إلا الله", "5": "الله أكبر", "6": "لا حول ولا قوة إلا بالله",
@@ -265,10 +218,13 @@
         "10": "لا إله إلا أنت سبحانك"
     };
 
+    // تهيئة العدادات بقيم صفرية لجميع الأذكار
     let counters = {};
-    let saveTimeout = null;
+    Object.keys(zikrNames).forEach(key => counters[key] = 0);
 
-    // 💾 تحميل البيانات عند البدء
+    let saveTimeout = null;
+    let lastTapTime = 0;
+
     function loadData() {
         try {
             const saved = localStorage.getItem(STORAGE_KEY);
@@ -282,24 +238,26 @@
         updateDisplay();
     }
 
-    // 💾 حفظ البيانات (مؤجل 400ms لتجنب الكتابة المتكررة)
     function scheduleSave() {
         if (saveTimeout) clearTimeout(saveTimeout);
         saveTimeout = setTimeout(() => {
-            try {
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(counters));
-                showSaveIndicator();
-            } catch (e) { console.error('Save Error:', e); }
+            saveToStorage();
+            showSaveIndicator();
         }, 400);
     }
-    // ️ تحديث الواجهة
+
+    function saveToStorage() {
+        try {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(counters));
+        } catch (e) { console.error('Save Error:', e); }
+    }
+
     function updateDisplay() {
         const id = selector.value;
         display.textContent = counters[id] || 0;
         currentZikrText.textContent = zikrNames[id];
     }
 
-    // 🔔 إشعار مؤقت
     function showNotification(msg) {
         notification.textContent = msg;
         notification.classList.add('show');
@@ -311,29 +269,25 @@
         setTimeout(() => saveIndicator.classList.remove('show'), 1200);
     }
 
-    // 👆 معالجة النقر على منطقة التسبيح
     function handleTap(e) {
         e.preventDefault();
-        e.stopPropagation();
-        
         const now = Date.now();
-        if (now - lastTapTime < 50) return; // منع النقر المزدوج السريع
+        if (now - lastTapTime < 50) return;
         lastTapTime = now;
 
         const id = selector.value;
-        counters[id] = (counters[id] || 0) + 1;
+        counters[id]++;
         display.textContent = counters[id];
 
         if (navigator.vibrate) navigator.vibrate(15);
         scheduleSave();
     }
 
-    // 🔄 زر التصفير (مضمون ومستقل)
+    // إصلاح دالة التصفير
     function handleReset(e) {
-        if(e) { e.preventDefault(); e.stopPropagation(); }
-        
+        e.preventDefault();
         const id = selector.value;
-        const currentVal = counters[id] || 0;
+        const currentVal = counters[id];
         
         if (currentVal === 0) {
             showNotification('العداد على الصفر بالفعل');
@@ -341,45 +295,28 @@
         }
 
         if (confirm(`هل تريد تصفير عداد "${zikrNames[id]}"؟\nالعدد الحالي: ${currentVal}`)) {
-            // 1. تعيين الصفر            counters[id] = 0;
-            
-            // 2. تحديث العرض فوراً
+            counters[id] = 0;
             display.textContent = '0';
-            
-            // 3. حفظ فوري ومباشر في الذاكرة (يتجاوز المؤقت)
-            try {
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(counters));
-            } catch(e) {}
-            
+            saveToStorage(); // حفظ فوري
             showSaveIndicator();
             showNotification('✅ تم تصفير العداد بنجاح');
         }
     }
 
-    let lastTapTime = 0;
-
-    // 🚀 تهيئة التطبيق
     function init() {
         loadData();
         
-        // ربط منطقة اللمس
+        // أحداث اللمس والنقر لمنطقة التسبيح
         tapZone.addEventListener('touchstart', handleTap, { passive: false });
-        tapZone.addEventListener('mousedown', handleTap);
-        tapZone.addEventListener('click', e => e.preventDefault());
+        tapZone.addEventListener('mousedown', (e) => {
+            if (e.button === 0) handleTap(e);
+        });
 
-        // ربط زر التصفير مباشرة
+        // حدث النقر لزر التصفير (يعمل على الموبايل والكمبيوتر)
         resetBtn.addEventListener('click', handleReset);
-        resetBtn.addEventListener('touchend', handleReset);
 
-        // تغيير الذكر
         selector.addEventListener('change', updateDisplay);
     }
-
-    // حفظ عند إغلاق التطبيق
-    window.addEventListener('beforeunload', () => {
-        if (saveTimeout) clearTimeout(saveTimeout);
-        try { localStorage.setItem(STORAGE_KEY, JSON.stringify(counters)); } catch(e){}
-    });
 
     window.addEventListener('DOMContentLoaded', init);
 </script>
