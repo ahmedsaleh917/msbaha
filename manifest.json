@@ -1,25 +1,25 @@
 {
-  "name": "مسبحة صفاء الروح",
-  "short_name": "مسبحة صفاء",
-  "description": "مسبحة إلكترونية لأذكار المسلم مع حفظ التقدم",
-  "start_url": "/index.html",
-  "display": "standalone",
-  "background_color": "#f4f7f6",
-  "theme_color": "#1e4d2b",
-  "orientation": "portrait",
-  "lang": "ar",
-  "dir": "rtl",
+  "short_name": "المسبحة",
+  "name": "المسبحة الإلكترونية - أذكار واستغفار",
   "icons": [
     {
-      "src": "https://i.postimg.cc/zGSvxgCn/1775323811617.png",
-      "sizes": "192x192",
+      "src": "icon-192.png",
       "type": "image/png",
-      "purpose": "any maskable"
+      "sizes": "192x192"
     },
     {
-      "src": "https://i.postimg.cc/zGSvxgCn/1775323811617.png",
-      "sizes": "512x512",
-      "type": "image/png"
+      "src": "icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512"
     }
-  ]
+  ],
+  "start_url": "index.html",
+  "background_color": "#1a1a1a",
+  "display": "standalone",
+  "scope": "/",
+  "theme_color": "#d4af37",
+  "description": "تطبيق بسيط للتسبيح والأذكار اليومية بواجهة مريحة وهادئة.",
+  "orientation": "portrait-primary",
+  "dir": "rtl",
+  "lang": "ar"
 }
