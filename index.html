@@ -1,64 +1,292 @@
-// --- Logic العداد السريع المطور ---
-const tapArea = document.getElementById('mainTap');
-const display = document.getElementById('bigCount');
-
-const trigger = (e) => {
-    if(e) e.preventDefault();
-    let z = zikrs.find(x => x.id == activeId);
-
-    // التحقق مما إذا تم الوصول للهدف مسبقاً
-    if (z.count >= z.target) {
-        return; // توقف عن العد
-    }
-
-    z.count++;
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>مسبحة صفاء الروح | SabriFX Elite</title>
     
-    // تحديث العرض
-    if (z.count >= z.target) {
-        // تأثير عند الوصول للهدف
-        display.innerHTML = `<span style="font-size:1.5rem; display:block; line-height:1.2;">بارك الله فيك<br>لقد حققت الهدف</span>`;
-        if(navigator.vibrate) navigator.vibrate([100, 50, 100]); // اهتزاز مميز
-    } else {
-        display.innerText = z.count;
-        if(navigator.vibrate) navigator.vibrate(50); // اهتزاز عادي
-    }
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    // أنيميشن الضغط
-    display.style.transform = "scale(1.1)";
-    setTimeout(() => display.style.transform = "scale(1)", 100);
+    <style>
+        :root {
+            --primary-gold: #d4af37;
+            --light-gold: #f9e29d;
+            --dark-gold: #a68b2f;
+            --deep-black: #050505;
+            --card-bg: rgba(20, 20, 20, 0.7);
+            --text-gold: #e5c05b;
+        }
 
-    render();
-};
+        * {
+            margin: 0; padding: 0; box-sizing: border-box;
+            font-family: 'Tajawal', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+        }
 
-// تعديل وظيفة الفتح لتعيد عرض الرقم إذا لم يكتمل أو الرسالة إذا اكتمل
-function openCounter(id) {
-    activeId = id;
-    let z = zikrs.find(x => x.id == id);
-    document.getElementById('currentTitle').innerText = z.name;
-    
-    if (z.count >= z.target) {
-        display.innerHTML = `<span style="font-size:1.5rem; display:block; line-height:1.2;">بارك الله فيك<br>لقد حققت الهدف</span>`;
-    } else {
-        display.innerText = z.count;
-    }
-    
-    document.getElementById('targetText').innerText = "الهدف: " + z.target;
-    document.getElementById('counterOverlay').classList.add('active');
-}
+        body {
+            background-color: var(--deep-black);
+            background-image: radial-gradient(circle at center, #1a1a1a 0%, var(--deep-black) 100%);
+            color: white;
+            min-height: 100vh;
+            overflow-x: hidden;
+            padding-bottom: 100px;
+        }
 
-// تعديل وظيفة التصفير لتعيد الرقم للظهور
-function resetCount() {
-    if(confirm('تصفير العداد؟')) {
-        let z = zikrs.find(x => x.id == activeId);
-        z.count = 0;
-        display.innerText = 0;
+        .header {
+            padding: 25px 20px;
+            text-align: center;
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            position: sticky; top: 0; z-index: 100;
+        }
+
+        .header h1 {
+            font-size: 1.6rem;
+            font-weight: 900;
+            background: linear-gradient(to bottom, var(--light-gold), var(--dark-gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 5px 15px rgba(212, 175, 55, 0.3);
+        }
+
+        .container { max-width: 480px; margin: 0 auto; padding: 20px 15px; }
+
+        .zikr-card {
+            background: var(--card-bg);
+            margin-bottom: 15px;
+            padding: 22px;
+            border-radius: 20px;
+            border: 1px solid rgba(212, 175, 55, 0.1);
+            position: relative;
+            transition: 0.3s;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+
+        .zikr-info { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+        .zikr-name { font-weight: 700; font-size: 1.2rem; color: var(--text-gold); }
+        .progress-text { color: var(--primary-gold); font-weight: bold; font-size: 0.9rem; }
+
+        .progress-container { height: 6px; background: rgba(255,255,255,0.05); border-radius: 10px; overflow: hidden; }
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--dark-gold), var(--primary-gold));
+            transition: width 0.4s ease;
+        }
+
+        .delete-btn { position: absolute; top: 10px; left: 10px; color: #444; font-size: 0.8rem; cursor: pointer; padding: 5px; }
+
+        .fab {
+            position: fixed; bottom: 30px; left: 30px;
+            width: 55px; height: 55px;
+            background: linear-gradient(135deg, var(--primary-gold), var(--dark-gold));
+            border-radius: 50%; border: none;
+            color: var(--deep-black); font-size: 1.4rem;
+            box-shadow: 0 8px 20px rgba(212, 175, 55, 0.4);
+            z-index: 500;
+        }
+
+        #counterOverlay {
+            position: fixed; inset: 0; background: var(--deep-black);
+            z-index: 2000; display: none; flex-direction: column;
+            align-items: center; justify-content: space-around; padding: 40px 20px;
+        }
+        #counterOverlay.active { display: flex; animation: slideUp 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); }
+
+        .counter-val {
+            font-size: 8rem; font-weight: 900;
+            color: var(--primary-gold);
+            text-shadow: 0 0 50px rgba(212, 175, 55, 0.2);
+            transition: transform 0.1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-align: center;
+        }
+
+        .tap-circle {
+            width: 160px; height: 160px;
+            border-radius: 50%;
+            border: 2px solid var(--primary-gold);
+            display: flex; align-items: center; justify-content: center;
+            background: radial-gradient(circle, #1a1a1a 0%, #000 100%);
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.1);
+            position: relative;
+        }
+        .tap-circle i { font-size: 3.5rem; color: var(--dark-gold); }
+        .tap-circle::after {
+            content: ''; position: absolute; inset: -8px;
+            border-radius: 50%; border: 1px solid rgba(212, 175, 55, 0.2);
+            border-top-color: var(--primary-gold);
+            animation: spin 3s infinite linear;
+        }
+
+        .modal-wrap {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.9);
+            display: none; align-items: center; justify-content: center; z-index: 3000;
+        }
+        .modal {
+            background: #111; width: 85%; padding: 30px; border-radius: 25px;
+            border: 1px solid var(--primary-gold); text-align: center;
+        }
+
+        input {
+            width: 100%; padding: 15px; margin: 10px 0;
+            background: #1a1a1a; border: 1px solid #333;
+            border-radius: 12px; color: white; text-align: center;
+        }
+
+        .btn-gold {
+            width: 100%; padding: 15px; background: var(--primary-gold);
+            border: none; border-radius: 12px; font-weight: 900; color: #000;
+        }
+
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>مسبحة صفاء الروح</h1>
+        <p style="color:var(--dark-gold); font-size:0.6rem; letter-spacing:3px;">SABRIFX ELITE EDITION</p>
+    </div>
+
+    <div class="container" id="listContainer"></div>
+
+    <button class="fab" onclick="showModal(true)"><i class="fas fa-plus"></i></button>
+
+    <div class="modal-wrap" id="modalAdd">
+        <div class="modal">
+            <h2 style="color:var(--primary-gold); margin-bottom:15px;">ذكر جديد</h2>
+            <input type="text" id="nameIn" placeholder="اسم الذكر">
+            <input type="number" id="targetIn" placeholder="الهدف">
+            <button class="btn-gold" onclick="saveZikr()">إضافة للمسبحة</button>
+            <p onclick="showModal(false)" style="margin-top:15px; color:#666; font-size:0.9rem;">إلغاء</p>
+        </div>
+    </div>
+
+    <div id="counterOverlay">
+        <div style="width:100%; display:flex; justify-content: space-between; align-items: center;">
+            <i class="fas fa-times" onclick="closeCounter()" style="color:#444; font-size:1.5rem;"></i>
+            <h2 id="currentTitle" style="color:var(--text-gold);"></h2>
+            <i class="fas fa-undo" onclick="resetCount()" style="color:#800; font-size:1.2rem;"></i>
+        </div>
+
+        <div class="counter-val" id="bigCount">0</div>
+
+        <div class="tap-circle" id="mainTap">
+            <i class="fas fa-fingerprint"></i>
+        </div>
+
+        <div id="targetText" style="color:var(--dark-gold); letter-spacing:2px;"></div>
+    </div>
+
+    <script>
+        let zikrs = JSON.parse(localStorage.getItem('sabri_elite_db')) || [
+            {id: 1, name: 'سبحان الله', count: 0, target: 33},
+            {id: 2, name: 'الحمد لله', count: 0, target: 33}
+        ];
+        let activeId = null;
+
+        function render() {
+            const list = document.getElementById('listContainer');
+            list.innerHTML = '';
+            zikrs.forEach(z => {
+                let p = (z.count / z.target) * 100;
+                list.innerHTML += `
+                    <div class="zikr-card" onclick="openCounter(${z.id})">
+                        <i class="fas fa-trash delete-btn" onclick="event.stopPropagation(); deleteZikr(${z.id})"></i>
+                        <div class="zikr-info">
+                            <span class="zikr-name">${z.name}</span>
+                            <span class="progress-text">${z.count} / ${z.target}</span>
+                        </div>
+                        <div class="progress-container">
+                            <div class="progress-bar" style="width: ${Math.min(p, 100)}%"></div>
+                        </div>
+                    </div>
+                `;
+            });
+            localStorage.setItem('sabri_elite_db', JSON.stringify(zikrs));
+        }
+
+        function showModal(s) { document.getElementById('modalAdd').style.display = s ? 'flex' : 'none'; }
+
+        function saveZikr() {
+            let n = document.getElementById('nameIn').value;
+            let t = document.getElementById('targetIn').value;
+            if(n && t > 0) {
+                zikrs.push({id: Date.now(), name: n, count: 0, target: parseInt(t)});
+                render(); showModal(false);
+                document.getElementById('nameIn').value = '';
+                document.getElementById('targetIn').value = '';
+            }
+        }
+
+        function openCounter(id) {
+            activeId = id;
+            let z = zikrs.find(x => x.id == id);
+            const display = document.getElementById('bigCount');
+            document.getElementById('currentTitle').innerText = z.name;
+            
+            if (z.count >= z.target) {
+                display.innerHTML = `<span style="font-size:1.5rem; display:block; line-height:1.2;">بارك الله فيك<br>لقد حققت الهدف</span>`;
+            } else {
+                display.innerText = z.count;
+            }
+            
+            document.getElementById('targetText').innerText = "الهدف: " + z.target;
+            document.getElementById('counterOverlay').classList.add('active');
+        }
+
+        function closeCounter() { document.getElementById('counterOverlay').classList.remove('active'); }
+
+        function resetCount() {
+            if(confirm('تصفير العداد؟')) {
+                let z = zikrs.find(x => x.id == activeId);
+                z.count = 0;
+                document.getElementById('bigCount').innerText = 0;
+                render();
+            }
+        }
+
+        function deleteZikr(id) {
+            if(confirm('حذف هذا الذكر؟')) {
+                zikrs = zikrs.filter(x => x.id != id);
+                render();
+            }
+        }
+
+        const tapArea = document.getElementById('mainTap');
+        const display = document.getElementById('bigCount');
+
+        const trigger = (e) => {
+            if(e) e.preventDefault();
+            let z = zikrs.find(x => x.id == activeId);
+
+            if (z.count >= z.target) return;
+
+            z.count++;
+            
+            if (z.count >= z.target) {
+                display.innerHTML = `<span style="font-size:1.5rem; display:block; line-height:1.2;">بارك الله فيك<br>لقد حققت الهدف</span>`;
+                if(navigator.vibrate) navigator.vibrate([100, 50, 100]); 
+            } else {
+                display.innerText = z.count;
+                if(navigator.vibrate) navigator.vibrate(50);
+            }
+            
+            display.style.transform = "scale(1.1)";
+            setTimeout(() => display.style.transform = "scale(1)", 100);
+            render();
+        };
+
+        tapArea.addEventListener('touchstart', trigger);
+        tapArea.addEventListener('mousedown', (e) => {
+            if(!('ontouchstart' in window)) trigger(e);
+        });
+
         render();
-    }
-}
-
-tapArea.addEventListener('touchstart', trigger);
-tapArea.addEventListener('mousedown', (e) => {
-    if(!('ontouchstart' in window)) trigger(e);
-});
-
-render();
+    </script>
+</body>
+</html>
