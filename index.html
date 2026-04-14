@@ -229,8 +229,12 @@
             const display = document.getElementById('bigCount');
             document.getElementById('currentTitle').innerText = z.name;
             
+            // إعادة ضبط الإعدادات الافتراضية للنص
+            display.style.fontSize = "8rem"; 
+
             if (z.count >= z.target) {
-                display.innerHTML = `<span style="font-size:1.5rem; display:block; line-height:1.2;">بارك الله فيك<br>لقد حققت الهدف</span>`;
+                display.style.fontSize = "1.5rem";
+                display.innerHTML = `<span>بارك الله فيك<br>لقد حققت الهدف</span>`;
             } else {
                 display.innerText = z.count;
             }
@@ -244,9 +248,13 @@
         function resetCount() {
             if(confirm('تصفير العداد؟')) {
                 let z = zikrs.find(x => x.id == activeId);
-                z.count = 0;
-                document.getElementById('bigCount').innerText = 0;
-                render();
+                if(z) {
+                    z.count = 0;
+                    const display = document.getElementById('bigCount');
+                    display.innerText = "0"; // العودة للرقم صفر فوراً
+                    display.style.fontSize = "8rem"; // استعادة حجم الخط الكبير
+                    render();
+                }
             }
         }
 
@@ -269,7 +277,8 @@
             z.count++;
             
             if (z.count >= z.target) {
-                display.innerHTML = `<span style="font-size:1.5rem; display:block; line-height:1.2;">بارك الله فيك<br>لقد حققت الهدف</span>`;
+                display.style.fontSize = "1.5rem";
+                display.innerHTML = `<span>بارك الله فيك<br>لقد حققت الهدف</span>`;
                 if(navigator.vibrate) navigator.vibrate([100, 50, 100]); 
             } else {
                 display.innerText = z.count;
