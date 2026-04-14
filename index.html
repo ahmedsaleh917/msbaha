@@ -76,7 +76,7 @@
             transition: width 0.4s ease;
         }
 
-        .delete-btn { position: absolute; top: 10px; left: 10px; color: #444; font-size: 0.8rem; cursor: pointer; padding: 5px; }
+        .delete-btn { position: absolute; top: 10px; left: 10px; color: #600; font-size: 1rem; cursor: pointer; padding: 5px; opacity: 0.6; }
 
         .fab {
             position: fixed; bottom: 30px; left: 30px;
@@ -183,6 +183,11 @@
     </div>
 
     <script>
+        // دالة مخصصة للاهتزاز تعمل على أغلب الهواتف
+        function vibrate(ms) {
+            if (navigator.vibrate) navigator.vibrate(ms);
+        }
+
         let zikrs = JSON.parse(localStorage.getItem('sabri_elite_db')) || [
             {id: 1, name: 'سبحان الله', count: 0, target: 33},
             {id: 2, name: 'الحمد لله', count: 0, target: 33}
@@ -196,7 +201,7 @@
                 let p = (z.count / z.target) * 100;
                 list.innerHTML += `
                     <div class="zikr-card" onclick="openCounter(${z.id})">
-                        <i class="fas fa-trash delete-btn" onclick="event.stopPropagation(); deleteZikr(${z.id})"></i>
+                        <i class="fas fa-trash-can delete-btn" onclick="event.stopPropagation(); deleteZikr(${z.id})"></i>
                         <div class="zikr-info">
                             <span class="zikr-name">${z.name}</span>
                             <span class="progress-text">${z.count} / ${z.target}</span>
@@ -229,7 +234,6 @@
             const display = document.getElementById('bigCount');
             document.getElementById('currentTitle').innerText = z.name;
             
-            // إعادة ضبط الإعدادات الافتراضية للنص
             display.style.fontSize = "8rem"; 
 
             if (z.count >= z.target) {
@@ -245,24 +249,24 @@
 
         function closeCounter() { document.getElementById('counterOverlay').classList.remove('active'); }
 
+        // تم تعديل التصفير ليعمل بدون الحاجة لنافذة confirm المعطلة
         function resetCount() {
-            if(confirm('تصفير العداد؟')) {
-                let z = zikrs.find(x => x.id == activeId);
-                if(z) {
-                    z.count = 0;
-                    const display = document.getElementById('bigCount');
-                    display.innerText = "0"; // العودة للرقم صفر فوراً
-                    display.style.fontSize = "8rem"; // استعادة حجم الخط الكبير
-                    render();
-                }
+            let z = zikrs.find(x => x.id == activeId);
+            if(z) {
+                z.count = 0;
+                const display = document.getElementById('bigCount');
+                display.innerText = "0";
+                display.style.fontSize = "8rem";
+                vibrate(100);
+                render();
             }
         }
 
+        // تم تعديل الحذف ليعمل فوراً ويحدث القائمة
         function deleteZikr(id) {
-            if(confirm('حذف هذا الذكر؟')) {
-                zikrs = zikrs.filter(x => x.id != id);
-                render();
-            }
+            zikrs = zikrs.filter(x => x.id != id);
+            vibrate([50, 50, 50]);
+            render();
         }
 
         const tapArea = document.getElementById('mainTap');
@@ -279,10 +283,10 @@
             if (z.count >= z.target) {
                 display.style.fontSize = "1.5rem";
                 display.innerHTML = `<span>بارك الله فيك<br>لقد حققت الهدف</span>`;
-                if(navigator.vibrate) navigator.vibrate([100, 50, 100]); 
+                vibrate([100, 50, 100]); 
             } else {
                 display.innerText = z.count;
-                if(navigator.vibrate) navigator.vibrate(50);
+                vibrate(40);
             }
             
             display.style.transform = "scale(1.1)";
